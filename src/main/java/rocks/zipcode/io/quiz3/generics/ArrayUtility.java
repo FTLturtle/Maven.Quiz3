@@ -1,9 +1,9 @@
 package rocks.zipcode.io.quiz3.generics;
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.function.Function;
-import java.util.stream.Stream;
+import java.util.function.IntFunction;
 
 /**
  * @author leon on 09/12/2018.
@@ -43,10 +43,6 @@ public class ArrayUtility<SomeType> {
 
     @SuppressWarnings("unchecked")
     public SomeType[] filter(Function<SomeType, Boolean> predicate) {
-        Object[] objectArray = Arrays.stream(array)
-                .filter(predicate::apply)
-                .toArray(Object[]::new);
-
-        return (SomeType[]) Arrays.copyOf(objectArray, objectArray.length, array.getClass());
+        return Arrays.stream(array).filter(predicate::apply).toArray(size -> (SomeType[]) Array.newInstance(array.getClass().getComponentType(), size));
     }
 }
